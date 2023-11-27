@@ -1,26 +1,36 @@
-import requests
-import json  # Agregar esta línea
+# app.py (backend)
 
-def obtener_informacion_pais(codigo_pais):
-    url = f'https://restcountries.com/v3.1/alpha/{codigo_pais}'
+import requests
+from flask import Flask, render_template
+import json
+
+app = Flask(__name__)
+
+def obtener_informacion_10_paises():
+    url = 'https://restcountries.com/v3.1/all'
     
     try:
         respuesta = requests.get(url)
         respuesta.raise_for_status()  # Manejar errores HTTP
 
-        datos_pais = respuesta.json()
+        datos_paises = respuesta.json()[:10]  # Obtener solo los primeros 10 países
 
         # Imprimir la respuesta completa en formato JSON
         print("Respuesta completa:")
-        print(json.dumps(datos_pais, indent=2))  # Imprimir en formato JSON con sangría
+        print(json.dumps(datos_paises, indent=2))  # Imprimir en formato JSON con sangría
 
-        # Continuar con el procesamiento de datos
-        # ...
+        return datos_paises
 
     except requests.exceptions.RequestException as e:
         print(f"Error al hacer la solicitud: {e}")
         return None
 
-# Ejemplo de uso
-codigo_pais = 'USA'  # Puedes cambiar esto a cualquier código de país que desees
-informacion_pais = obtener_informacion_pais(codigo_pais)
+@app.route('/')
+def index():
+    # Ejemplo de uso
+    informacion_paises = obtener_informacion_10_paises()
+    
+    return render_template('index.html', countries_data=informacion_paises)
+
+if __name__ == '__main__':
+    app.run(debug=True)
