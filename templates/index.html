@@ -7,30 +7,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Información de los Primeros 10 Países</title>
-    <style>
-        /* Estilo para ajustar el tamaño de las imágenes */
-        img {
-            width: 100px;
-            height: auto;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 
 <body>
     <h1>Información de los Primeros 10 Países</h1>
     <ul>
         {% for country in countries_data %}
-        <li>
-            <img src="{{ url_for('static', filename='images/' + country['name']['common'] + '.jpg') }}"
-                alt="{{ country['name']['common'] }} Image">
+            <li>
+                <img src="{{ url_for('static', filename='images/' + country['name']['common'] + '.jpg') }}" alt="{{ country['name']['common'] }} Image">
+                <br>
+                <strong>Nombre Común:</strong> {{ country['name']['common'] }}
+                <br>
+                <strong>Nombre Oficial:</strong> {{ country['name']['official'] }}
+                <br>
+                <!-- Agrega más elementos según sea necesario -->
+            </li>
             <br>
-            <strong>Nombre Común:</strong> {{ country['name']['common'] }}
-            <br>
-            <strong>Nombre Oficial:</strong> {{ country['name']['official'] }}
-            <br>
-            <!-- Agrega más elementos según sea necesario -->
-        </li>
-        <br>
         {% endfor %}
     </ul>
 </body>
